@@ -1,0 +1,29 @@
+{
+  "name": "CS410-project",
+  "version": "1.0.0",
+  "description": "Repo for the project in CS410 at UIUC",
+  "main": "app.js",
+  "dependencies": {
+    "elasticsearch": "^4.0.2",
+    "express": "^4.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johankasperi/CS410-project.git"
+  },
+  "keywords": [
+    "Elasticsearch",
+    "nodejs",
+    "angular"
+  ],
+  "author": "Johan Kasperi <johan@kasperi.se>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johankasperi/CS410-project/issues"
+  },
+  "homepage": "https://github.com/johankasperi/CS410-project"
+}
