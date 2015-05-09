@@ -1,0 +1,81 @@
+<div class="container">
+	<div class="row">
+	  <div class="col-lg-12">
+	    <h3>Dynamic Search Engine for Learning</h3>
+	  </div>
+	</div>
+	<div class="row padding-top padding-bottom">
+	  <div class="col-md-4">
+	    <h5>Filters</h5>
+	    <label class="checkbox-inline">
+	      <input type="checkbox" ng-model="search.params.stem"> Stemming
+	    </label>
+	    <label class="checkbox-inline">
+	      <input type="checkbox" ng-model="search.params.stop"> Stop word
+	    </label>
+	    <label class="checkbox-inline">
+	      <input type="checkbox" ng-model="search.params.lowercase"> Lowercase
+	    </label>
+	  </div>
+	  <div class="col-md-4">
+	    <h5>Similarity function</h5>
+	    <label class="radio-inline">
+	      <input type="radio" name="similarity" ng-model="search.params.similarity" value="BM25"> BM25
+	    </label>
+	    <label class="radio-inline">
+	      <input type="radio" name="similarity" ng-model="search.params.similarity" value="LMD"> LMDirichlet
+	    </label>
+	  </div>
+	  <div class="col-md-4">
+	    <h5>Query type</h5>
+	    <label class="radio-inline">
+	      <input type="radio" name="query_type" ng-model="search.params.query_type" value="1"> Match
+	    </label>
+	    <label class="radio-inline">
+	      <input type="radio" name="query_type" ng-model="search.params.query_type" value="2"> More like this
+	    </label>
+	    <label class="radio-inline">
+	      <input type="radio" name="query_type" ng-model="search.params.query_type" value="3"> Common
+	    </label>
+	  </div>
+	</div>
+	<div class="row padding-bottom">
+		<div class="col-lg-12">
+	    <form ng-submit="search.search()">
+	      <div class="input-group">
+	        <input type="text" ng-model="search.params.search_query" value="search.params.search_query" class="form-control" placeholder="What are you looking for?">
+	        <span class="input-group-btn">
+	          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+	        </span>
+	      </div>
+	    </form>
+	  </div>
+  </div>
+  <div class="row padding-top padding-bottom">
+		<div class="col-lg-7 padding-bottom" ng-repeat="result in search.results">
+			<h4><a href="result._source.url" target="_blank" title="result._source.title">{{ result._source.title }}</a></h4>
+			<p>{{ result._source.body | limitTo: 200 }}...</p>
+			<div><small><strong>Score:</strong> {{ result._score }}</small></div>
+			<div><small><a href="result._source.url" target="_blank" title="result._source.title">{{ result._source.url }}</a></small></div>
+		</div>
+  </div>
+  <div class="row padding-top padding-bottom">
+  <div class="col-lg-7">
+	  <nav>
+		  <ul class="pagination">
+		    <li>
+		      <a href="#" aria-label="Previous">
+		        <span aria-hidden="true">&laquo;</span>
+		      </a>
+		    </li>
+		    <li ng-repeat="n in [1,2,3]"><a href="#" ng-click="changePage">{{this.startPage-n}}</a></li>
+		    <li ng-repeat="n in [1,2,3]"><a href="#" ng-click="changePage">{{this.startPage+n}}</a></li>
+		    <li>
+		      <a href="#" aria-label="Next">
+		        <span aria-hidden="true">&raquo;</span>
+		      </a>
+		    </li>
+		  </ul>
+		</nav>
+	</div>
+</div>

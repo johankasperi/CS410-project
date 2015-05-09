@@ -6,7 +6,7 @@ var client = new elasticsearch.Client({
 });
 
 var query = function(req, callback) {
-	var pageNum = req.param('page', 1);
+	var pageNum = req.query.page || 1;
 	var docPerPage = 2;
 
 	buildQuery(req, function(query) {
@@ -30,9 +30,9 @@ var query = function(req, callback) {
 }
 
 var buildQuery = function(req, callback) {
-	var queryType = req.param('query_type', 1);
-	var userQuery = req.param('search_query');
-	var similarity = req.param('similarity', 'BM25');
+	var queryType = req.query.query_type || 1;
+	var userQuery = req.query.search_query;
+	var similarity = req.query.similarity || 'BM25';
 
 	var selectedAlgorithm = createAlgorithm(req);
 	var titleField = "title_"+selectedAlgorithm+"_"+similarity;
@@ -40,8 +40,8 @@ var buildQuery = function(req, callback) {
 
 	// If "multi_match" is selected
 	if(queryType == 1) {
-		var titleboost = req.param('titleboost', 1);
-		var bodyboost = req.param('bodyboost', 1)
+		var titleboost = req.query.titleboost || 1;
+		var bodyboost = req.query.bodyboost || 1;
 		var query = {
 			query: {
 				multi_match : {
@@ -57,7 +57,7 @@ var buildQuery = function(req, callback) {
 
 	// If "more like this" is selected
 	else if(queryType == 2) {
-		var boostTerms = req.param("boost_terms", 0);
+		var boostTerms = req.query.boost_terms || 0;
 		var query = {
 			query: {
 			    more_like_this : {
@@ -75,7 +75,7 @@ var buildQuery = function(req, callback) {
 
 	// If "common" is selected
 	else if(queryType == 3) {
-		var cutOff = req.param("cutoff_frequency", 0.001);
+		var cutOff = req.query.cutoff_frequency || 0.001;
 		var field = bodyField;
 		var query = {
 			query: {
@@ -96,9 +96,9 @@ var buildQuery = function(req, callback) {
 }
 
 var createAlgorithm = function(req) {
-	var stop = req.param('stop', 0);
-	var stem = req.param('stem', 0);
-	var lowercase = req.param('lowercase', 0);
+	var stop = req.query.stop || 0;
+	var stem = req.query.stem || 0;
+	var lowercase = req.query.lowercase || 0;
 
 	var selectedAlgorithm = "";
 	if(stop == 1) {

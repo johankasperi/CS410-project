@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="dynamicSearch">
+
+    <div ng-view=""></div>
+
+    <div class="footer">
+      <div class="container">
+        <p>Created by <a href="http://kasperi.se" target="_blank" title="Johan Kasperi">Johan Kasperi</a>, Kamal Chaya and Shreevardan Kandoi as the project in <a href="http://sifaka.cs.uiuc.edu/course/410s15/info.html" target="_blank" title="CS410">CS410 at University of Illinois at Urbana-Champaign.</a></p>
+      </div>
+    </div>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/StartCtrl.js"></script>
+    <script src="scripts/controllers/SearchCtrl.js"></script>
+    <script src="scripts/controllers/LearnCtrl.js"></script>
+    <script src="scripts/services/restService.js"></script>
+    <!-- endbuild -->
+</body>
+</html>
