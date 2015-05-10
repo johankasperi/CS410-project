@@ -1,17 +1,16 @@
 var elasticsearch = require('elasticsearch');
 
 var client = new elasticsearch.Client({
-  host: 'localhost:9200',
+  host: 'https://jwe787qdfg:8tklsg1l6y@dselearning-6526988738.us-west-2.bonsai.io',
   log: 'trace'
 });
 
 var query = function(req, callback) {
 	var pageNum = req.query.page || 1;
-	var docPerPage = 2;
-
+	var docPerPage = 15;
 	buildQuery(req, function(query) {
 		client.search({
-			  index: 'kasperi2_index',
+			  index: 'cs410_index',
 			  from: (pageNum - 1) * docPerPage,
 			  size: docPerPage,
 			  body: query
@@ -20,12 +19,35 @@ var query = function(req, callback) {
 			    return callback(error, null);
 			  }
 
-			  return callback(null, {
-			    results: response.hits.hits,
-			    page: pageNum,
-			    pages: Math.ceil(response.hits.total / docPerPage)
-			  });
+			  getTermVector(response.hits.hits, req.query.search_query, function(termVector) {
+			  	  return callback(null, {
+				    results: response.hits.hits,
+				    page: pageNum,
+				    pages: Math.ceil(response.hits.total / docPerPage),
+				    term_vector: termVector
+				  });
+			  })
 		});
+	})
+}
+
+var getTermVector = function(docs, userQuery, callback) {
+	var docIds = [];
+	for(var i = 0; i < docs.length; i++) {
+		docIds.push(docs[i]._id);
+	}
+	client.mtermvectors({
+		index: "cs410_index",
+		termStatistics: true,
+		ids: docIds,
+		fields: ["title"],
+		type: "doc"
+	}, function (error, response) {
+		if(error) {
+			return callback(null);
+		}
+		console.log(JSON.stringify(response));
+		callback(response);
 	})
 }
 
@@ -57,13 +79,13 @@ var buildQuery = function(req, callback) {
 
 	// If "more like this" is selected
 	else if(queryType == 2) {
-		var boostTerms = req.query.boost_terms || 0;
+		var percentageMust = parseFloat(req.query.percentage_must) || 0.3;
 		var query = {
 			query: {
 			    more_like_this : {
 			        fields: [titleField, bodyField],
 			        like_text: userQuery,
-			        boost_terms: boostTerms,
+			        percent_terms_to_match: percentageMust,
 			        min_term_freq : 1,
 			    }
 	  		}
@@ -75,7 +97,7 @@ var buildQuery = function(req, callback) {
 
 	// If "common" is selected
 	else if(queryType == 3) {
-		var cutOff = req.query.cutoff_frequency || 0.001;
+		var cutOff = parseFloat(req.query.cutoff_frequency) || 0.001;
 		var field = bodyField;
 		var query = {
 			query: {

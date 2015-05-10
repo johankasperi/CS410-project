@@ -3,7 +3,8 @@
 	var StartCtrl = function(restService, $location) {
 		this.restService = restService;
 		this.location = $location;
-		this.params = this.restService.getParams();
+
+		this.params = this.restService.getDefaultParams();
 		this.searchError = false;
 	};
 
@@ -12,8 +13,7 @@
 			this.searchError = true;
 			return;
 		}
-		this.restService.setParams(this.params);
-		this.location.path("/search");
+		this.location.path("/search").search(this.params);
 	};
 
 	dynamicSearch.controller('StartCtrl', StartCtrl);

@@ -1,59 +1,58 @@
-<div class="container">
-  <div class="row padding-top padding-bottom">
-    <div class="col-lg-12">
-      <h1>Dynamic Search Engine for Learning</h1>
-    </div>
+
+<div class="row padding-top padding-bottom">
+  <div class="col-lg-12">
+    <h1>Dynamic Search Engine for Learning</h1>
   </div>
-  <div class="row padding-top">
-    <div class="col-md-4">
-      <h5>Filters</h5>
-      <label class="checkbox-inline">
-        <input type="checkbox" ng-model="start.params.stem"> Stemming
-      </label>
-      <label class="checkbox-inline">
-        <input type="checkbox" ng-model="start.params.stop"> Stop word
-      </label>
-      <label class="checkbox-inline">
-        <input type="checkbox" ng-model="start.params.lowercase"> Lowercase
-      </label>
-    </div>
-    <div class="col-md-4">
-      <h5>Similarity function</h5>
-      <label class="radio-inline">
-        <input type="radio" name="similarity" ng-model="start.params.similarity" value="BM25"> BM25
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="similarity" ng-model="start.params.similarity" value="LMD"> LMDirichlet
-      </label>
-    </div>
-    <div class="col-md-4">
-      <h5>Query type</h5>
-      <label class="radio-inline">
-        <input type="radio" name="query_type" ng-model="start.params.query_type" value="1"> Match
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="query_type" ng-model="start.params.query_type" value="2"> More like this
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="query_type" ng-model="start.params.query_type" value="3"> Common
-      </label>
-    </div>
+</div>
+<div class="row padding-top">
+  <div class="col-md-4">
+    <h5>Query function</h5>
+    <label class="radio-inline">
+      <input type="radio" name="query_type" ng-model="start.params.query_type" value="1"> <a href="#/learn/6" title="Match query function">Match</a>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="query_type" ng-model="start.params.query_type" value="2"> <a href="#/learn/7" title="More like this query function">More like this</a>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="query_type" ng-model="start.params.query_type" value="3"> <a href="#/learn/8" title="Common query function">Common</a>
+    </label>
   </div>
-  <div class="row padding-top padding-bottom">
-    <div class="col-lg-12">
-      <form ng-submit="start.search()">
-        <div class="input-group input-group-lg">
-          <input type="text" ng-model="start.params.search_query" class="form-control" placeholder="What are you looking for?">
-          <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-          </span>
-        </div>
-      </form>
-    </div>
+  <div class="col-md-4">
+    <h5>Filters</h5>
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="start.params.stem" ng-true-value="'1'" ng-false-value="'0'"> <a href="#/learn/1" title="Stemming filter">Stemming</a>
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="start.params.stop" ng-true-value="'1'" ng-false-value="'0'"> <a href="#/learn/2" title="Stop word filter">Stop word</a>
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="start.params.lowercase" ng-true-value="'1'" ng-false-value="'0'"> <a href="#/learn/1" title="Lowercase filter">Lowercase</a>
+    </label>
   </div>
-  <div class="row padding-bottom" ng-show="start.searchError">
-    <div class="col-lg-12">
-      <div class="alert alert-danger" role="alert"><strong>Oh snap!</strong> You cannot search without a query.</div>
-    </div>
+  <div class="col-md-4">
+    <h5>Similarity function</h5>
+    <label class="radio-inline">
+      <input type="radio" name="similarity" ng-model="start.params.similarity" value="BM25"> <a href="#/learn/4" title="Okapi BM25 similarity">BM25</a>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="similarity" ng-model="start.params.similarity" value="LMD"> <a href="#/learn/5" title="LMDirichlet similarity">LMDirichlet</a>
+    </label>
+  </div>
+</div>
+<div class="row padding-top padding-bottom">
+  <div class="col-lg-12">
+    <form ng-submit="start.search()">
+      <div class="input-group input-group-lg">
+        <input type="text" ng-model="start.params.search_query" class="form-control" placeholder="What are you looking for?">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-primary" ng-class="start.params.search_query.length < 1 ? 'disabled': ''"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row padding-bottom" ng-show="start.searchError">
+  <div class="col-lg-12">
+    <div class="alert alert-danger" role="alert"><strong>Wrong!</strong> You cannot search without a query.</div>
   </div>
 </div>

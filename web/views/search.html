@@ -1,81 +1,174 @@
-<div class="container">
-	<div class="row">
-	  <div class="col-lg-12">
-	    <h3>Dynamic Search Engine for Learning</h3>
-	  </div>
-	</div>
-	<div class="row padding-top padding-bottom">
-	  <div class="col-md-4">
-	    <h5>Filters</h5>
-	    <label class="checkbox-inline">
-	      <input type="checkbox" ng-model="search.params.stem"> Stemming
-	    </label>
-	    <label class="checkbox-inline">
-	      <input type="checkbox" ng-model="search.params.stop"> Stop word
-	    </label>
-	    <label class="checkbox-inline">
-	      <input type="checkbox" ng-model="search.params.lowercase"> Lowercase
-	    </label>
-	  </div>
-	  <div class="col-md-4">
-	    <h5>Similarity function</h5>
-	    <label class="radio-inline">
-	      <input type="radio" name="similarity" ng-model="search.params.similarity" value="BM25"> BM25
-	    </label>
-	    <label class="radio-inline">
-	      <input type="radio" name="similarity" ng-model="search.params.similarity" value="LMD"> LMDirichlet
-	    </label>
-	  </div>
-	  <div class="col-md-4">
-	    <h5>Query type</h5>
-	    <label class="radio-inline">
-	      <input type="radio" name="query_type" ng-model="search.params.query_type" value="1"> Match
-	    </label>
-	    <label class="radio-inline">
-	      <input type="radio" name="query_type" ng-model="search.params.query_type" value="2"> More like this
-	    </label>
-	    <label class="radio-inline">
-	      <input type="radio" name="query_type" ng-model="search.params.query_type" value="3"> Common
-	    </label>
-	  </div>
-	</div>
-	<div class="row padding-bottom">
-		<div class="col-lg-12">
-	    <form ng-submit="search.search()">
-	      <div class="input-group">
-	        <input type="text" ng-model="search.params.search_query" value="search.params.search_query" class="form-control" placeholder="What are you looking for?">
-	        <span class="input-group-btn">
-	          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-	        </span>
-	      </div>
-	    </form>
-	  </div>
+<div class="row padding-bottom">
+  <div class="col-lg-12">
+    <h3>Dynamic Search Engine for Learning</h3>
   </div>
-  <div class="row padding-top padding-bottom">
-		<div class="col-lg-7 padding-bottom" ng-repeat="result in search.results">
-			<h4><a href="result._source.url" target="_blank" title="result._source.title">{{ result._source.title }}</a></h4>
-			<p>{{ result._source.body | limitTo: 200 }}...</p>
-			<div><small><strong>Score:</strong> {{ result._score }}</small></div>
-			<div><small><a href="result._source.url" target="_blank" title="result._source.title">{{ result._source.url }}</a></small></div>
-		</div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Algorithm</h3>
   </div>
-  <div class="row padding-top padding-bottom">
-  <div class="col-lg-7">
-	  <nav>
-		  <ul class="pagination">
-		    <li>
-		      <a href="#" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    <li ng-repeat="n in [1,2,3]"><a href="#" ng-click="changePage">{{this.startPage-n}}</a></li>
-		    <li ng-repeat="n in [1,2,3]"><a href="#" ng-click="changePage">{{this.startPage+n}}</a></li>
-		    <li>
-		      <a href="#" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		      </a>
-		    </li>
-		  </ul>
-		</nav>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Query function</h5>
+        <label class="radio-inline">
+          <input type="radio" name="query_type" ng-model="search.params.query_type" value="1"> <a href="#/learn/6" title="Match query function">Match</a>
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="query_type" ng-model="search.params.query_type" value="2"> <a href="#/learn/7" title="More like this query function">More like this</a>
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="query_type" ng-model="search.params.query_type" value="3"> <a href="#/learn/8" title="Common query function">Common</a>
+        </label>
+      </div>
+      <div class="col-md-4">
+        <h5>Filters</h5>
+        <label class="checkbox-inline">
+          <input type="checkbox" ng-model="search.params.stem" ng-true-value="'1'" ng-false-value="'0'"> <a href="#/learn/1" title="Stemming filter">Stemming</a>
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" ng-model="search.params.stop" ng-true-value="'1'" ng-false-value="'0'"> <a href="#/learn/2" title="Stop word filter">Stop word</a>
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" ng-model="search.params.lowercase" ng-true-value="'1'" ng-false-value="'0'"> <a href="#/learn/1" title="Lowercase filter">Lowercase</a>
+        </label>
+      </div>
+      <div class="col-md-4">
+        <h5>Similarity function</h5>
+        <label class="radio-inline">
+          <input type="radio" name="similarity" ng-model="search.params.similarity" value="BM25"> <a href="#/learn/4" title="Okapi BM25 similarity">BM25</a>
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="similarity" ng-model="search.params.similarity" value="LMD"> <a href="#/learn/5" title="LMDirichlet similarity">LMDirichlet</a>
+        </label>
+      </div>
+    </div>
+    <div class="row padding-top">
+      <div class="col-lg-12">
+        <h5>Additional parameters</h5>
+        <div ng-show="search.params.query_type == 1">
+          <small>The "Match" query type takes two additional parameters, "title boost" and "body boost". These two parameters decides how much weight that should be put to the title or the body of the documents in the collection. This basically means that higher the boost, the more important is that field of the document. <a href="#/learn/8" title="Match query function">Read more about "Match".</a></small>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group form-group-sm">
+                <label for="titleboost"><small>Title boost</small></label>
+                <input type="number" string-to-number class="form-control" id="titleboost" placeholder="Any positive number" ng-model="search.params.titleboost" ng-value="search.params.titleboost" min="0">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group form-group-sm">
+                <label for="bodyboost"><small>Body boost</small></label>
+                <input type="number" string-to-number class="form-control" id="bodyboost" placeholder="Any positive number" ng-model="search.params.bodyboost" ng-value="search.params.bodyboost" min="0">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="search.params.query_type == 2">
+          <small>The "More like this" query type takes a additional parameter called "percentage terms must match". This parameter decides how big portion of the terms in the query that has to exist in the retrieved documents. Default is 0.3 (30 %). <a href="#/learn/8" title="More like this query function">Read more about "More like this".</a></small>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group form-group-sm">
+                <label for="percentage_must"><small>Percentage terms must match</small></label>
+                <input type="number" string-to-number class="form-control" id="percentage_must" placeholder="0 to 1" ng-model="search.params.percentage_must" ng-value="search.params.percentage_must" min="0" max="1">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="search.params.query_type == 3">
+          <small>The "Common" query type takes a additional parameter called "cut off frequency". The "Common" query divides the search query into two groups, low and high frequency words in the collection, and it is this parameter that decides the threshold of that divide. Default is 0.001 (0.1 %). <a href="#/learn/8" title="Common query function">Read more about "Common".</a></small>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group form-group-sm">
+                <label for="cutoff_frequency"><small>Cut off frequency</small></label>
+                <input type="number" string-to-number class="form-control" id="cutoff_frequency" placeholder="0 to 1" ng-model="search.params.cutoff_frequency" ng-value="search.params.cutoff_frequency" min="0" max="0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Query</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+    	<div class="col-lg-12">
+        <form ng-submit="search.search(true)">
+          <div class="input-group input-group-lg">
+            <input type="text" ng-model="search.params.search_query" value="search.params.search_query" class="form-control" placeholder="What are you looking for?">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary" ng-class="start.params.search_query.length < 1 ? 'disabled': ''"><span class="glyphicon glyphicon-search"></span></button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row padding-top" ng-show="search.searchError">
+      <div class="col-lg-12">
+        <div class="alert alert-danger" role="alert"><strong>Wrong!</strong> You cannot search without a query.</div>
+      </div>
+    </div>
+    <div class="row padding-top" ng-show="search.showInfoBox">
+      <div class="col-lg-12">
+        <div class="alert alert-success" role="alert">
+          <strong>Success!</strong> You searched for "{{ search.info.query }}" using
+          <span ng-show="search.info.filters.length > 0">
+            the filters
+            <span ng-repeat="f in search.info.filters">
+              <a href="{{f.source}}" title="{{f.name}}"> {{f.name}}</a><span ng-if="$index < search.info.filters.length-2">, </span><span ng-if="$index == search.info.filters.length-2"> and </span><span ng-if="$index == search.info.filters.length-1">, </span>
+            </span>
+          </span>
+          the similarity function <a href="{{search.info.similarity.source}}" title="{{search.info.similarity.name}}">{{ search.info.similarity.name }}</a> and the query function <a href="{{search.info.query_type.source}}" title="{{search.info.query_type.name}}">{{ search.info.query_type.name }}</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row padding-top padding-bottom" ng-hide="search.loading">
+	<div class="col-lg-7 padding-bottom" ng-repeat="result in search.results">
+		<h4><a href="http://{{result._source.url}}" target="_blank" title="{{ result._source.title | limitTo: 50 }}">{{ result._source.title | limitTo: 50 }}</a></h4>
+		<p>{{ result._source.body | limitTo: 200 }}...</p>
+		<div><small><strong>Score:</strong> {{ result._score }}</small></div>
+		<div><small><a href="http://{{result._source.url}}" target="_blank" title="result._source.title">{{ result._source.url }}</a></small></div>
 	</div>
+  <div class="col-lg-12" ng-show="search.results.length > 0">
+    <nav>
+      <ul class="pagination">
+        <li ng-show="search.currentPage > 1">
+          <a  href ng-click="search.paginate(1)" aria-label="First">
+            <span aria-hidden="true">&laquo; First</span>
+          </a>
+        </li>
+        <li ng-show="search.currentPage > 1">
+          <a  href ng-click="search.paginate(search.currentPage-1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo; Previous</span>
+          </a>
+        </li>
+        <li ng-repeat="page in search.pagination" ng-class="page == search.currentPage ? 'disabled' : ''"><a href ng-click="search.paginate(page)">{{page}}</a></li>
+        <li ng-show="search.currentPage != search.pages">
+          <a href ng-click="search.paginate(search.currentPage+1)" aria-label="Next">
+            <span aria-hidden="true">Next &raquo;</span>
+          </a>
+        </li>
+        <li ng-show="search.currentPage != search.pages">
+          <a  href ng-click="search.paginate(search.pages)" aria-label="Last">
+            <span aria-hidden="true">Last &raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="col-lg-12" ng-show="search.results.length == 0">
+    <p>No results. Please try again.</p>
+  </div>
+</div>
+<div class="row padding-bottom" ng-show="search.loading">
+  <div class="col-lg-12">
+    <div class="throbber">
+        Loading...
+    </div>
+  </div>
 </div>
