@@ -46,7 +46,6 @@
 
 				self.results = result.results;
 				self.termVector = result.term_vector;
-				console.log(self.termVector);
 
 				self.buildInfoBox();
 				self.showInfoBox = true;
@@ -129,9 +128,7 @@
 			first = newFirst > 1 ? newFirst : 1;
 			last = this.pages;
 		};
-		console.log(this.currentPage);
-		console.log(first);
-		console.log(last);
+
 		this.pagination = [];
 		for(var i = first; i <= last; i++) {
 			this.pagination.push(i);
@@ -139,7 +136,6 @@
 	}
 
 	SearchCtrl.prototype.paginate = function(page) {
-		console.log(page);
 		this.params.page = page;
 		this.location.search(this.params);
 	}

@@ -34,19 +34,19 @@ var resources = [
 	{
 		id: 6,
 		name: "Match query function",
-		content: "",
+		content: "This means that the term the user searches has to be matched exactly in the documents. Documents having the exact and more frequent matches get placed higher on the list.",
 		resource: "http://www.elastic.co/guide/en/elasticsearch/reference/1.5/query-dsl-match-query.html"
 	},
 	{
 		id: 7,
 		name: "More like this query function",
-		content: "",
+		content: "Finds documents that are similar to the query the user provides. They do not have to match exactly like in the “Match” query.",
 		resource: "http://www.elastic.co/guide/en/elasticsearch/reference/1.5/query-dsl-mlt-query.html"
 	},
 	{
 		id: 8,
 		name: "Common query function",
-		content: "",
+		content: "Does not require any retrieved documents to have any common english words provided in the user’s query (like “the”, or “and”). This can increase the chances that more relevant documents are retrieved.",
 		resource: "http://www.elastic.co/guide/en/elasticsearch/reference/1.5/query-dsl-common-terms-query.html"
 	}
 ]

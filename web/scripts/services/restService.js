@@ -29,7 +29,6 @@
         return callback(true, null);
       }).
       success(function(data, status) {
-        console.log(data);
         return callback(null, data);
       });
   };
