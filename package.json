@@ -2,6 +2,9 @@
   "name": "CS410-project",
   "version": "1.0.0",
   "description": "Repo for the project in CS410 at UIUC",
+  "scripts": {
+    "start": "supervisor app.js"
+  },
   "main": "app.js",
   "dependencies": {
     "elasticsearch": "^4.0.2",
