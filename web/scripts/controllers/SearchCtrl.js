@@ -114,6 +114,15 @@
 		}
 	}
 
+	SearchCtrl.prototype.fixUrl = function(url) {
+		if(url.startsWith('http://')) {
+			return url;
+		}
+		else {
+			return "http://"+url;
+		}
+	}
+
 	SearchCtrl.prototype.getPagination = function() {
 		this.pagination = [];
 		var first = this.currentPage - 4;
