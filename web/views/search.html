@@ -133,7 +133,7 @@
   		<h4><a href="{{search.fixUrl(result._source.url)}}" target="_blank" title="{{ result._source.title | limitTo: 50 }}">{{ result._source.title | limitTo: 50 }}</a></h4>
   		<p>{{ result._source.body | limitTo: 200 }}...</p>
   		<div><small><strong>Score:</strong> {{ result._score }}</small></div>
-  		<div><small><a href="{{ search.fixUrl(result._source.url)}}" target="_blank" title="result._source.title">{{ result._source.url }}</a></small></div>
+  		<div><small><a href="{{ search.fixUrl(result._source.url)}}" target="_blank" title="{{ result._source.title | limitTo: 50  }}">{{ search.fixUrl(result._source.url)}}</a></small></div>
   	</div>
   </div>
   <div class="col-sm-4" ng-show="search.results.length > 0">
