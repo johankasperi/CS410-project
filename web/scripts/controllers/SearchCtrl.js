@@ -45,6 +45,8 @@
 				self.getPagination();
 
 				self.results = result.results;
+				self.termVector = result.term_vector;
+				console.log(self.termVector);
 
 				self.buildInfoBox();
 				self.showInfoBox = true;
@@ -116,17 +118,22 @@
 	SearchCtrl.prototype.getPagination = function() {
 		this.pagination = [];
 		var first = this.currentPage - 4;
-		var last = this.currentPage + 5;
+		var last = this.currentPage + 4;
 		if(first < 1) {
-			last = (first*-1) + parseInt(this.currentPage) + 5;
+			var newLast = (first*-1) + parseInt(this.currentPage) + 5;
+			last = newLast < this.pages ? newLast : this.pages;
 			first = 1;
 		}
-		if(last >= this.pages) {
-			first = this.pages-8;
-			last = this.pages+1;
+		if(last > this.pages) {
+			var newFirst = this.pages-8;
+			first = newFirst > 1 ? newFirst : 1;
+			last = this.pages;
 		};
+		console.log(this.currentPage);
+		console.log(first);
+		console.log(last);
 		this.pagination = [];
-		for(var i = first; i < last; i++) {
+		for(var i = first; i <= last; i++) {
 			this.pagination.push(i);
 		}
 	}

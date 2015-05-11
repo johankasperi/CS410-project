@@ -2,15 +2,7 @@ body {
   padding: 0;
 }
 
-.header,
-.footer,
-.big-container {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
 .footer {
-  padding-top: 100px;
   color: #777;
 }
 

@@ -1,12 +1,12 @@
 var elasticsearch = require('elasticsearch');
+var _ = require('underscore');
 
 var client = new elasticsearch.Client({
-  host: 'https://jwe787qdfg:8tklsg1l6y@dselearning-6526988738.us-west-2.bonsai.io',
-  log: 'trace'
+  host: 'https://jwe787qdfg:8tklsg1l6y@dselearning-6526988738.us-west-2.bonsai.io'
 });
 
 var query = function(req, callback) {
-	var pageNum = req.query.page || 1;
+	var pageNum = req.query.page > 1 ? req.query.page : 1;
 	var docPerPage = 15;
 	buildQuery(req, function(query) {
 		client.search({
@@ -33,21 +33,66 @@ var query = function(req, callback) {
 
 var getTermVector = function(docs, userQuery, callback) {
 	var docIds = [];
+	userQuery = userQuery.toLowerCase().split(" ");
+
+	userQuery = _.uniq(userQuery);
+	var average = [];
+	for(var i = 0; i < userQuery.length; i++) {
+		average[i] = {
+			name: userQuery[i],
+			title_term_freq: 0,
+			body_term_freq: 0
+		}
+	}
 	for(var i = 0; i < docs.length; i++) {
-		docIds.push(docs[i]._id);
+		docIds.push({ _id: docs[i]._id, termStatistics: true });
 	}
 	client.mtermvectors({
 		index: "cs410_index",
-		termStatistics: true,
-		ids: docIds,
-		fields: ["title"],
-		type: "doc"
+		type: "doc",
+		body: {
+			docs: docIds
+		}
 	}, function (error, response) {
 		if(error) {
 			return callback(null);
 		}
-		console.log(JSON.stringify(response));
-		callback(response);
+
+		for(var i = 0; i < response.docs.length; i++) {
+			var titleTerms = [];
+			var bodyTerms = [];
+
+			if(response.docs[i].term_vectors["body.body_raw_BM25"]) {
+				bodyTerms = response.docs[i].term_vectors["body.body_raw_BM25"].terms;
+				bodyTerms = _.pick(bodyTerms, function(value, key, obj){ return userQuery.indexOf(key) != -1; });
+				for(var j = 0; j < average.length; j++) {
+					if(bodyTerms[average[j].name]) {
+						average[j].body_term_freq += bodyTerms[average[j].name].term_freq;
+					}
+				}
+				response.docs[i].term_vectors["body.body_raw_BM25"].terms = bodyTerms;
+
+			}
+
+			if(response.docs[i].term_vectors["title.title_raw_BM25"]) {
+				titleTerms = response.docs[i].term_vectors["title.title_raw_BM25"].terms;
+				titleTerms = _.pick(titleTerms, function(value, key, obj){ return userQuery.indexOf(key) != -1; });
+				for(var j = 0; j < average.length; j++) {
+					if(titleTerms[average[j].name]) {
+						average[j].title_term_freq += titleTerms[average[j].name].term_freq;
+					}
+				}
+				response.docs[i].term_vectors["title.title_raw_BM25"].terms = titleTerms;
+
+			}
+		}
+
+		for(var i = 0; i < average.length; i++) {
+			average[i].title_term_freq /= response.docs.length;
+			average[i].body_term_freq /= response.docs.length;
+		}
+
+		callback({ response: response, average: average });
 	})
 }
 

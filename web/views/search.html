@@ -127,13 +127,39 @@
     </div>
   </div>
 </div>
-<div class="row padding-top padding-bottom" ng-hide="search.loading">
-	<div class="col-lg-7 padding-bottom" ng-repeat="result in search.results">
-		<h4><a href="http://{{result._source.url}}" target="_blank" title="{{ result._source.title | limitTo: 50 }}">{{ result._source.title | limitTo: 50 }}</a></h4>
-		<p>{{ result._source.body | limitTo: 200 }}...</p>
-		<div><small><strong>Score:</strong> {{ result._score }}</small></div>
-		<div><small><a href="http://{{result._source.url}}" target="_blank" title="result._source.title">{{ result._source.url }}</a></small></div>
-	</div>
+<div class="row padding-top" ng-hide="search.loading">
+  <div class="col-sm-8">
+  	<div class="padding-bottom" ng-repeat="result in search.results">
+  		<h4><a href="http://{{result._source.url}}" target="_blank" title="{{ result._source.title | limitTo: 50 }}">{{ result._source.title | limitTo: 50 }}</a></h4>
+  		<p>{{ result._source.body | limitTo: 200 }}...</p>
+  		<div><small><strong>Score:</strong> {{ result._score }}</small></div>
+  		<div><small><a href="http://{{result._source.url}}" target="_blank" title="result._source.title">{{ result._source.url }}</a></small></div>
+  	</div>
+  </div>
+  <div class="col-sm-4" ng-show="search.results.length > 0">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Frequency analysis</h3>
+      </div>
+      <div class="panel-body">
+        <p>Here can you see the average term frequency of the words in your query in the documents shown. This is shown so you can get an idea about the performance of the algorithm you selected. Two columns is shown, one for the term frequency in the title and one for the body.</p>
+      </div>
+      <table class="table">
+        <tr>
+          <th>Word</th>
+          <th>Avg. title freq.</th>
+          <th>Avg. body freq.</th>
+        </tr>
+        <tr ng-repeat="word in search.termVector.average">
+          <td>{{ word.name }}</td>
+          <td>{{ word.title_term_freq | number:3 }}</td>
+          <td>{{ word.body_term_freq | number:3 }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row padding-bottom">
   <div class="col-lg-12" ng-show="search.results.length > 0">
     <nav>
       <ul class="pagination">
@@ -147,7 +173,7 @@
             <span aria-hidden="true">&laquo; Previous</span>
           </a>
         </li>
-        <li ng-repeat="page in search.pagination" ng-class="page == search.currentPage ? 'disabled' : ''"><a href ng-click="search.paginate(page)">{{page}}</a></li>
+        <li ng-repeat="page in search.pagination" ng-class="page == search.currentPage ? 'active' : ''"><a href ng-click="search.paginate(page)">{{page}}</a></li>
         <li ng-show="search.currentPage != search.pages">
           <a href ng-click="search.paginate(search.currentPage+1)" aria-label="Next">
             <span aria-hidden="true">Next &raquo;</span>
@@ -161,7 +187,7 @@
       </ul>
     </nav>
   </div>
-  <div class="col-lg-12" ng-show="search.results.length == 0">
+  <div class="col-lg-12" ng-show="search.results.length == 0 && search.loading == false">
     <p>No results. Please try again.</p>
   </div>
 </div>
