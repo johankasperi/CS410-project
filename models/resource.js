@@ -28,8 +28,8 @@ var resources = [
 	{
 		id: 5,
 		name: "LMDirichlet similarity function",
-		content: "",
-		resource: "http://en.wikipedia.org/wiki/Dirichlet_distribution"
+		content: "LMDirichilet Similarity function uses Bayesian smoothing using Dirichlet priors.",
+		resource: "http://lucene.apache.org/core/4_7_1/core/org/apache/lucene/search/similarities/LMDirichletSimilarity.html"
 	},
 	{
 		id: 6,
